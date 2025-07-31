@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import { ENV } from "./config/env.js";
 import { db } from "./config/db.js";
 import { favoritesTable } from "./db/schema.js";
@@ -7,6 +8,14 @@ import job from "./config/cron.js";
 
 const app = express();
 const PORT = ENV.PORT || 5001;
+
+// Enable CORS for all origins (dev use) or restrict as needed
+app.use(
+  cors({
+    origin: "*", // or 'http://localhost:8081' if you want to restrict
+    credentials: true,
+  })
+);
 
 if (ENV.NODE_ENV === "production") job.start();
 
